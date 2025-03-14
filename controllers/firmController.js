@@ -19,7 +19,7 @@ const firmRegister = async (req, res) => {
 
 const supplierId = req.supplierId; // Get supplierId from the request object
 try {
-const { firmName, area, category, region, offer} = req.body;
+const { firmName, location, category, region, offer} = req.body;
 
 const image = req.file? req.file.filename: undefined;
 
@@ -32,7 +32,7 @@ const supplierExists = await Supplier.findById(supplier);
 
  const newFirm = new Firm({
      firmName,
-     area,
+     location,
      category,
      region,
      offer,
