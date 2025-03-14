@@ -9,9 +9,6 @@ dotEnv.config();
 const secretKey = process.env.WhoAreYou
 
 
-
-
-
 const supplierRegister = async(req, res)=>{
          const {username, email, password} = req.body;
          try {
@@ -61,6 +58,32 @@ try {
 }
 }
 
+const getAllSuppliers = async(req, res) =>{
+    try {
+        const supplier = await Supplier.find().populate('firm');
+        res.json({supplier})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error:  "Internal server error" });
+    }
+}
 
-module.exports = { supplierRegister, supplierLogin }
+const getSupplierById = async (req, res) => {
+    const supplierId = req.params.id
+
+    try {
+        const supplier = await Supplier.findById(supplierId).populate('firm');
+        if(!supplier){
+            return res.status(404
+            ).json({error: "Supplier not found"})
+        }
+        res.status(200).json({supplier})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error:  "Internal server error" });
+    }
+    
+}
+
+module.exports = { supplierRegister, supplierLogin, getAllSuppliers, getSupplierById }
            

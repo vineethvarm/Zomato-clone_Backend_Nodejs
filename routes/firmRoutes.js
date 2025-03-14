@@ -5,6 +5,6 @@ const verifyToken = require('../middlewares/verifyToken');
 
 const router = express.Router();
 
-router.post('/add-firm', verifyToken, firmController.firmRegister);
+router.post('/addfirm', verifyToken, firmController.firmRegister);
 
 module.exports = router;
