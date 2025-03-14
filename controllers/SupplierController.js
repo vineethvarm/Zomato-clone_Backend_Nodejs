@@ -48,7 +48,7 @@ const supplierLogin = async(req, res)=>{
 try {
        const supplier = await Supplier.findOne({email})
        if(!supplier || !(await bcrypt.compare(password, supplier.password))) {
-        return res.status(401).json({error: "Invalid username or Password please check your username or password"})
+        return res.status(401).json({error: "please check your username or Password"})
        }
        const token =
          jwt.sign({ supplierId: supplier._id }, secretKey, { expiresIn: '1h' })
