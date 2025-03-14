@@ -2,7 +2,8 @@
 const express = require('express');
 const dotEnv = require('dotenv');
 const mongoose = require('mongoose');
-const supplierRoutes = require('./routes/supplierRoutes');// Change to match the exact file name
+const supplierRoutes = require('./routes/supplierRoutes');
+const firmRoutes = require('./routes/firmRoutes');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -13,16 +14,16 @@ dotEnv.config();
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error));
 
-    app.use(bodyParser.json());
-    app.use('/supplier',supplierRoutes);
-
+app.use(bodyParser.json());
+app.use('/supplier', supplierRoutes);
+app.use('/firm', firmRoutes);
 
 app.listen(PORT, () => {
-    console.log(`server started and running at ${PORT}`)
-})
+    console.log(`Server started and running at ${PORT}`);
+});
 
-app.use('/Zomatoclone', (req, res) =>{
-    res.send("<h1>WelCome to Zomato-clone</h1>");
-})
+app.use('/Zomatoclone', (req, res) => {
+    res.send("<h1>Welcome to Zomato-clone</h1>");
+});
