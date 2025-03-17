@@ -29,5 +29,5 @@ app.listen(PORT, () => {
 });
 
 app.use('/', (req, res) => {
-    res.send("<h1>Welcome to Zomato-clone</h1>");
+    res.send("<h1> Welcome to Zomato-clone </h1>");
 });
