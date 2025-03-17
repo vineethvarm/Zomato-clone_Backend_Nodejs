@@ -10,7 +10,7 @@ const path = require('path')
 
 const app = express();
 
-const PORT = 3999;
+const PORT = process.env.PORT || 3999;
 
 dotEnv.config();
 
@@ -28,6 +28,6 @@ app.listen(PORT, () => {
     console.log(`Server started and running at ${PORT}`);
 });
 
-app.use('/Zomatoclone', (req, res) => {
+app.use('/', (req, res) => {
     res.send("<h1>Welcome to Zomato-clone</h1>");
 });
