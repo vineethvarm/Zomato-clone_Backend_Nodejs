@@ -13,8 +13,7 @@ const supplierSchema = new mongoose.Schema({
      },
      password:{
         type: String,
-        required: true,
-        unique: true
+        required: true
      },
      firm:[
       {

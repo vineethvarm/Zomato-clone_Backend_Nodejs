@@ -1,11 +1,11 @@
 
 const express = require('express');
-const firmController = require('../controllers/firmController');
-const verifyToken = require('../middlewares/verifyToken');
+const productController = require('../controllers/productController');
 
 const router = express.Router();
 
-router.post('/addfirm', verifyToken, firmController.firmRegister);
+router.post('/addproduct/:firmId', productController.addProduct);
+router.get('/:firmId/products', productController.getProductByFirm);
 
 router.get('/images/:imageName', (req, res)=>{
     const imageName = req.params.imageName;
@@ -13,6 +13,6 @@ router.get('/images/:imageName', (req, res)=>{
     res.sendFile(Path.join(__dirname, '../images', imageName));
 });
 
-router.delete('/:firmId', firmController.deleteFirmById);
+router.delete('/:productId', productController.deleteProductById);
 
 module.exports = router;

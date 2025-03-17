@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
      cb(null, 'images/'); // Destination folder where the uploaded images will be stored
  },
  filename: function(req, file, cb) {
-     cb(null, Data.now() + '-' + file.orginalname); //generating a unique filename
+     cb(null, Data.now() + Path.extname( file.orginalname)); //generating a unique filename
  }
 });
 const upload = multer ({ storage: storage });
@@ -20,14 +20,12 @@ const firmRegister = async (req, res) => {
 const supplierId = req.supplierId; // Get supplierId from the request object
 try {
 const { firmName, location, category, region, offer} = req.body;
-
 const image = req.file? req.file.filename: undefined;
 
 const supplier = await Supplier.findById(req.supplierId);
-
 const supplierExists = await Supplier.findById(supplier);
  if (!supplierExists) {
-     return res.status(400).json({ error: "Supplier not found" });
+     return res.status(404).json({ error: "Supplier not found" });
  }
 
  const newFirm = new Firm({
@@ -54,5 +52,20 @@ const supplierExists = await Supplier.findById(supplier);
 }
 };
 
+const deleteFirmById = async(req, res) => {
+        try{
+            const firmId = req.params.firmId;
+    
+            const deleteProduct = await Firm.findByIdAndDelete(firmId);
+            if(!deleteProduct){
+                return res.status(404).json({error: "Product not found"});
+            }
+        }catch(error)
+        {
+          console.error(error);
+          res.status(500).json({ error: "Internal server error" })
+        }
+    }
+
   module.exports = {
-    firmRegister: [upload.single('image'), firmRegister] };
+    firmRegister: [upload.single('image'), firmRegister], deleteFirmById }
