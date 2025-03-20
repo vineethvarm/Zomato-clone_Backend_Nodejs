@@ -16,16 +16,17 @@ const productSchema = new mongoose.Schema({
             enum: ['veg','non-veg']
         }]
     },
+    bestseller: {
+        type: [{
+            type: Boolean,
+            enum: ['Yes', 'No']
+        }]
+    },
     image: {
         type: String
     },
     description: {
         type: String
-    },
-    rating: {
-        type: Number,
-        min: 1,
-        max: 5
     },
     firm:{
         type: mongoose.Schema.Types.ObjectId,

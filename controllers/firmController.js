@@ -40,11 +40,13 @@ const firmRegister = async (req, res) => {
         });
         const savedFirm = await newFirm.save();
 
+        const firmId = savedFirm._id;
+
         // Push the new firm's ID into the supplier's firm array
         supplier.firm.push(savedFirm._id);
         await supplier.save();
 
-        res.status(201).json({ message: "Firm Registered Successfully" });
+        res.status(201).json({ message: "Firm Registered Successfully", firmId });
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ error: "A firm with the same restaurant name and location already exists" });
