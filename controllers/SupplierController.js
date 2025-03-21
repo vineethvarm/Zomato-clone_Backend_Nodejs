@@ -79,7 +79,7 @@ const getSupplierById = async (req, res) => {
             return res.status(404).json({error: "Supplier not found"})
         }
         const supplierFirmId = supplier.firm[0]._id;
-        res.status(200).json({ supplierId, supplierFirmId })
+        res.status(200).json({ supplierId, supplierFirmId, supplier})
         console.log(supplierFirmId);
     } catch (error) {
         console.log(error);
