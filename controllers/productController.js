@@ -2,6 +2,7 @@
 const Product = require("../models/Product");
 const multer = require("multer");
 const Firm = require('../models/Firm');
+const mongoose = require('mongoose');
 const Path = require("path");
 
 // Configure multer for file uploads
@@ -22,9 +23,16 @@ const addProduct = async (req, res) => {
         const image = req.file ? req.file.filename : undefined;
 
         const firmId = req.params.firmId;
-        const firm = await Firm.findById(firmId);
 
+         // Validate firmId
+        if (!mongoose.Types.ObjectId.isValid(firmId)) {
+            console.error('Invalid firm ID:', firmId);
+        return res.status(400).json({ error: 'Invalid firm ID' });
+        }
+
+        const firm = await Firm.findById(firmId);
         if (!firm) {
+            console.error('Firm not found for ID:', firmId);
             return res.status(404).json({ error: "Firm not found" });
         }
 
@@ -35,7 +43,7 @@ const addProduct = async (req, res) => {
             description,
             bestseller,
             image,
-            firm: firm._id
+            firm: firmId
         });
 
         const savedProduct = await product.save();
@@ -57,6 +65,12 @@ const addProduct = async (req, res) => {
 const getProductByFirm = async (req, res) => {
     try {
         const firmId = req.params.firmId;
+
+        // Validate firmId
+        if (!mongoose.Types.ObjectId.isValid(firmId)) {
+            return res.status(400).json({ error: "Invalid firm ID" });
+        }
+
         const firm = await Firm.findById(firmId);
 
         if (!firm) {
@@ -77,6 +91,11 @@ const deleteProductById = async (req, res) => {
     try {
         const productId = req.params.productId;
 
+         // Validate productId
+         if (!mongoose.Types.ObjectId.isValid(productId)) {
+            return res.status(400).json({ error: "Invalid product ID" });
+        }
+
         const deleteProduct = await Product.findByIdAndDelete(productId);
         if (!deleteProduct) {
             return res.status(404).json({ error: "Product not found" });
@@ -90,3 +109,4 @@ const deleteProductById = async (req, res) => {
 };
 
 module.exports = { addProduct: [upload.single('image'), addProduct], getProductByFirm, deleteProductById };
+

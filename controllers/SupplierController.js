@@ -50,7 +50,9 @@ try {
        const token =
          jwt.sign({ supplierId: supplier._id }, secretKey, { expiresIn: '1h' })
 
-       res.status(200).json({success: "Login successfull", token})
+         const supplierId = supplier._id;
+
+       res.status(200).json({success: "Login successfull", token, supplierId});
        console.log(email, "This is token", token);
 } catch (error) {
     console.log(error);
@@ -69,15 +71,16 @@ const getAllSuppliers = async(req, res) =>{
 }
 
 const getSupplierById = async (req, res) => {
-    const supplierId = req.params.id
+    const supplierId = req.params.id;
 
     try {
         const supplier = await Supplier.findById(supplierId).populate('firm');
         if(!supplier){
-            return res.status(404
-            ).json({error: "Supplier not found"})
+            return res.status(404).json({error: "Supplier not found"})
         }
-        res.status(200).json({supplier})
+        const supplierFirmId = supplier.firm[0]._id;
+        res.status(200).json({ supplierId, supplierFirmId })
+        console.log(supplierFirmId);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error:  "Internal server error" });

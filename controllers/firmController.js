@@ -26,6 +26,9 @@ const firmRegister = async (req, res) => {
         if (!supplier) {
             return res.status(404).json({ error: "Supplier not found" });
         }
+        if(supplier.firm.length > 0){
+            return res.status(400).json({message: "for one Supplier only one firm can be added."});
+        }
 
         const newFirm = new Firm({
             restaurantName,
@@ -48,9 +51,6 @@ const firmRegister = async (req, res) => {
 
         res.status(201).json({ message: "Firm Registered Successfully", firmId });
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(400).json({ error: "A firm with the same restaurant name and location already exists" });
-        }
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
